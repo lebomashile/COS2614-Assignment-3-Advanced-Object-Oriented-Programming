@@ -24,37 +24,58 @@ int main(int argc, char *argv[])
 
     for(int i = 0 ; i < 10; i++)
         if(customerList.add(customer[i]))
-            cout << "Add Successful ->" <<  customer[i]->toString(true) <<endl;
+            cout << "Add Successful ->" <<  customer[i]->toString(true) <<Qt::endl;
         else
-            cout << "Add Failed ->" <<  customer[i]->toString(true) <<endl;
-
-
+            cout << "Add Failed ->" <<  customer[i]->toString(true) <<Qt::endl;
 
     cout << "Search by ID:";
     cout.flush();
+
     id = cin.readLine();
 
+    cout << "Input received: " << id << Qt::endl;
 
-    if(customerList.findByID(id) != 0)
-        cout << customerList.findByID(id)->toString(true);
+    Customer *found = customerList.findByID(id);
+
+    cout << "findByID finished" << Qt::endl;
+
+    if (found != nullptr)
+    {
+        cout << "Customer found" << Qt::endl;
+        cout << found->toString(true) << Qt::endl;
+    }
     else
-        cout << "Customer not found";
+    {
+        cout << "Customer not found" << Qt::endl;
+    }
 
-    cout << endl << "Search by name:";
+    cout << "Moving to name search..." << Qt::endl;
+    cout.flush();
+
+    cout << Qt::endl << "Search by name:";
     cout.flush();
     name = cin.readLine();
 
     QList<Customer*> nameList = customerList.findByName(name);
 
     if(nameList.size() > 0)
+
+    {
     foreach(Customer *c, nameList)
-        if(c != 0)
-            cout  << c->toString(true) << endl;
+        {
+        if(c != nullptr)
+        {
+            cout  << c->toString(true) << Qt::endl;
+        }
+    }
+    }
 
     else
-            cout << "Customer not found" << endl;
+    {
+            cout << "Customer not found" << Qt::endl;
+    }
 
-    cout << endl << "Search by dpc:";
+    cout << Qt::endl << "Search by dpc:";
     cout.flush();
     postalCode = cin.readLine();
 
@@ -63,18 +84,17 @@ int main(int argc, char *argv[])
     if(dpcList.size() > 0){
         foreach(Customer *c, dpcList)
             if(c != 0)
-                cout  << c->toString(true) << endl;
+                cout  << c->toString(true) << Qt::endl;
     }
     else
-        cout << "Customer not found" << endl;
+        cout << "Customer not found" << Qt::endl;
 
-    cout << endl << "Done...";
+    cout << Qt::endl << "Done...";
     cout.flush();
 
 
-    return a.exec();
+    return 0;
 }
-
 
 
 

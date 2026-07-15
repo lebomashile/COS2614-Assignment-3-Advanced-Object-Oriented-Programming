@@ -1,6 +1,6 @@
 #include <QDebug>
 #include <QtGlobal>
-#include <QTime>
+#include <QRandomGenerator>
 #include "randomcustomerfactory.h"
 
 RandomCustomerFactory::RandomCustomerFactory(){
@@ -9,7 +9,7 @@ RandomCustomerFactory::RandomCustomerFactory(){
     initializeStreetAddresses();
     initializeCities();
     initializeZipCodes();
-    qsrand(QTime::currentTime().msec());
+
 }
 
 void RandomCustomerFactory::initializeFirstNames(){
@@ -50,19 +50,18 @@ void RandomCustomerFactory::initializeZipCodes(){
 
 Customer* RandomCustomerFactory::getAContact(){
     QString sepCharacter = ",";
-    QString randomFName = firstNames.at((qrand() % (firstNames.size() + 0)));
-    QString randomLName = lastNames.at((qrand() % (lastNames.size() + 0)));
+    QString randomFName = firstNames.at(QRandomGenerator::global()->bounded(firstNames.size()));
+    QString randomLName = lastNames.at(QRandomGenerator::global()->bounded(lastNames.size()));
     QString randomName = QString("%1 %2")
                          .arg(randomFName)
                          .arg(randomLName);
     QString randomUniqueID = generateID();
     QString randomAddress = QString("%1%2%3%4%5")
-                            .arg(streetAddresses.at((qrand() % (streetAddresses.size() + 0))))
-                            .arg(sepCharacter)
-                            .arg(cities.at((qrand() % (cities.size() + 0))))
-                            .arg(sepCharacter)
-                            .arg(zipCodes.at((qrand() % (zipCodes.size() + 0))));
-
+                                .arg(streetAddresses.at(QRandomGenerator::global()->bounded(streetAddresses.size())))
+                                .arg(sepCharacter)
+                                .arg(cities.at(QRandomGenerator::global()->bounded(cities.size())))
+                                .arg(sepCharacter)
+                                .arg(zipCodes.at(QRandomGenerator::global()->bounded(zipCodes.size())));
     Customer* randomCust = new Customer(randomName, randomUniqueID);
     randomCust->setAddress(true,randomAddress,sepCharacter);
     randomCust->setAddress(false,randomAddress,sepCharacter);
@@ -70,7 +69,7 @@ Customer* RandomCustomerFactory::getAContact(){
 }
 
 QString RandomCustomerFactory::generateID(){
-    int randomID = qrand() % ((9999 + 1) - 1111) + 1111;
+    int randomID = QRandomGenerator::global()->bounded(1111, 10000);
     return QString::number(randomID);
 }
 
